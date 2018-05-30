@@ -2,6 +2,7 @@ import os
 from flask import Flask, redirect, render_template, request
 from datetime import datetime
 from datetime import timedelta  
+from profanity import profanity
 
 app = Flask(__name__)
         
@@ -18,11 +19,11 @@ def get_all_comments():
     return comments
     
 def add_comments(username, comment, days):
-    write_to_file('data/comments.txt', "({0}) {1} added/subtracted {2} days because: {3}\n".format(
-            datetime.now().strftime("%A %d %B"),
+    write_to_file('data/comments.txt', "({0}) {1}: {2} days because: {3}\n".format(
+            datetime.now().strftime("%d %B"),
             username,
             days,
-            comment))
+            profanity.censor(comment)))
     return redirect(request.form) 
     
 def add_days(days):
@@ -53,8 +54,9 @@ def index():
     stored_days = get_stored_days()
     end_date = get_end_date(stored_days)
     if request.method == 'POST':
-        write_to_file('data/users.txt', request.form['username'] + '\n')
-        return redirect(request.form['username'])
+        if profanity.contains_profanity(request.form['username']) == False:
+            write_to_file('data/users.txt', request.form['username'] + '\n')
+            return redirect(request.form['username'])
     return render_template('index.html', end_date=end_date)
     
     

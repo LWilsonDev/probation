@@ -2,3 +2,5 @@ Lucy
 Benny
 Nathan
 PatrickLucy
+Lucy
+lucy
