@@ -8,6 +8,16 @@
 </head>
 <body>
     <h1>Welcome {{ username }}</h1>
+    <h2>End Date: {{ end_date }} </h2>
+    
+    <form method='POST'>
+        <label for='comment'>Comment:</label>
+        <input type="text" id='comment' name="comment"/>
+        <label for='days'>Days +/-:</label>
+        <input type="number" id='days' name="days"/>
+        <button>Submit</button>
+    </form>
+    
     {% for comment in prob_comments %}
     <p>{{ comment }}</p>
     {% endfor %}
